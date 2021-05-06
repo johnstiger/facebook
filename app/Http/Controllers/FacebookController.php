@@ -22,16 +22,16 @@ class FacebookController extends Controller
 
             if($fbId){
                 Auth::login($user);
-                return redirect('/welcome');
+                return view('welcome',compact('user'));
             }else{
-                $createUser = User::create([
+                $user = User::create([
                     'name' => $user->name,
                     'email' => $user->email,
                     'facebook_id' => $user->id,
                 ]);
 
-                Auth::login($createUser);
-                return redirect('/welcome');
+                Auth::login($user);
+                return view('welcome',compact('user'));
             }
         } catch (\Exception $error) {
             dd($error->getMessage());
