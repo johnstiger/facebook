@@ -14,11 +14,12 @@
                     <img src="https://cdn1.vectorstock.com/i/1000x1000/12/90/welcome-poster-with-brush-strokes-vector-21131290.jpg" alt="">
                 </div>
                 <div class="col">
-                    <input type="text" value="{{ $user->name }}">
+                    {{ $user }}
+                    {{-- <input type="text" value="{{ $user->name }}">
                     <input type="text" value="{{ $user->age }}">
                     <input type="text" value="{{ $user->gender }}">
                     <input type="text" value="{{ $user->birthday }}">
-                    <input type="text" value="{{ $user->email }}">
+                    <input type="text" value="{{ $user->email }}"> --}}
                 </div>
             </div>
         </div>
