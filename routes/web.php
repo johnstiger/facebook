@@ -34,3 +34,7 @@ Route::post('/login','AuthController@login')->name('login');
 
 Route::view('/success','success')->name('success');
 Route::get('/NotVerified','AuthController@notVerified')->name('verification.notice');
+
+Route::get('/dashboard/{user}',function(User $user){
+    return view('welcome',compact('user'));
+})->name('dashboard');

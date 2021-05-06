@@ -32,16 +32,15 @@ class FacebookController extends Controller
                 'gender',
                 'email'
             ])->user();
-            $fbId = User::where('facebook_id',$user->id)->first();
 
+            $fbId = User::where('facebook_id',$user->id)->first();
             $date = DateTime::createFromFormat('m/d/Y',$user['birthday'])->format('Y-m-d');
             $age = Carbon::parse($date)->diff(Carbon::now())->format('%y');
 
             if($fbId){
-                Auth::login($user);
-                return view('welcome',compact('user'));
+                $user = $fbId;
+                return redirect()->route('dashboard',$user);
             }else{
-
                 $user = User::create([
                     'name' => $user['first_name']." ".$user['last_name'],
                     'email' => $user['email'],
@@ -51,9 +50,8 @@ class FacebookController extends Controller
                     'age' => $age,
                     'facebook_id' => $user['id'],
                 ]);
-
                 Auth::login($user);
-                return view('welcome',compact('user'));
+                return redirect()->route('dashboard',$user);
             }
         } catch (\Exception $error) {
             dd($error->getMessage());

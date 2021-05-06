@@ -87,7 +87,7 @@
             @csrf
             <input type="email" placeholder="Email Address" name="email">
             @if($errors->has('email'))
-            <div class="error">{{ $errors->first('password') }}</div>
+            <div class="error">{{ $errors->first('email') }}</div>
             @endif
             <br>
             <input type="password" placeholder="Password" name="password">

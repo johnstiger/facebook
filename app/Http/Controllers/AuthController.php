@@ -73,7 +73,7 @@ class AuthController extends Controller
                     if($user->email_verified_at == null){
                         return back()->with('error','Your Email is Not Verified Yet! Please Register');
                     }
-                    return view('welcome',compact('user'));
+                    return redirect()->route('dashboard',$user);
                 }
             }
         } catch (\Exception $error) {
