@@ -96,6 +96,7 @@
             @endif
             <br>
             <button type="submit">Login</button>
+            or
             <div class="facebook">
                 <a class="btn" href="{{ url('auth/redirect') }}"
                     >
