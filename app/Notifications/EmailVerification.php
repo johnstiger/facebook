@@ -42,9 +42,10 @@ class EmailVerification extends Notification
      */
     public function toMail($notifiable)
     {
+        $url = "https://johnstiger.herokuapp.com/".$this->user->id."/".$this->token;
         return (new MailMessage)
                     ->line('The introduction to the notification.')
-                    ->action('Validate Email', url('/registration-form/'.$this->user->id.'/'.$this->token))
+                    ->action('Validate Email', $url)
                     ->line('Thank you for using our application!');
     }
 
