@@ -11,6 +11,12 @@ use Laravel\Socialite\Facades\Socialite;
 
 class FacebookController extends Controller
 {
+    /**
+     *
+     * Where the use will redirect to FB page
+     * to login
+     * return datas
+    */
     public function redirect()
     {
         return Socialite::driver('facebook')->fields([
@@ -22,6 +28,13 @@ class FacebookController extends Controller
         ])->scopes(['user_birthday','email','user_gender'])->redirect();
     }
 
+
+    /**
+     *
+     * Callback where the FB response
+     * create Access Token to Authorized
+     * return dashboard
+    */
     public function callback()
     {
         try {
@@ -39,6 +52,7 @@ class FacebookController extends Controller
 
             if($fbId){
                 $user = $fbId;
+                $user->createToken('access_token');
                 return redirect()->route('dashboard',$user);
             }else{
                 $user = User::create([
@@ -50,6 +64,7 @@ class FacebookController extends Controller
                     'age' => $age,
                     'facebook_id' => $user['id'],
                 ]);
+                $user->createToken('access_token');
                 Auth::login($user);
                 return redirect()->route('dashboard',$user);
             }

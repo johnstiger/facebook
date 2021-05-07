@@ -1,74 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
-    <style>
-        .wrapper{
-            justify-content: center;
-            align-content: center;
-            display: grid;
-            width: 100vw;
-            position: fixed;
-            height: 100vh;
-        }
-        .container{
-            width: auto;
-            padding: 20px;
-            text-align: center;
-            border: none;
-            border-radius: 10px;
-            box-shadow: 1px 1px 5px dimgrey;
-        }
-        .container input{
-            padding: 7px;
-            border-style: solid;
-            border: none;
-            border-bottom: 1px solid;
-            border-radius: 0px;
-            width: 230px;
-            margin-bottom: 20px;
-            outline: none;
-        }
-        #gender{
-            margin-bottom: 25px;
-        }
-        button{
-            padding: 10px;
-            width: 100%;
-            margin-top: 30px;
-            background-color: darkgreen;
-            border: none;
-            border-radius: 10px;
-            color: white;
-            cursor: pointer;
-        }
-        .password{
-            margin-left: 20px;
-        }
-        .facebook{
-            margin-top: 9px;
-            padding: 8px;
-            background-color: rgb(9, 124, 231);
-            border-radius: 10px;
-        }
-        a{
-            text-decoration: none;
-            color: white;
-        }
-        .error{
-            color: red;
-            font-size: 12px;
-        }
-    </style>
-</head>
-<body>
+@extends('layout.app')
+<link rel="stylesheet" href="{{ asset('css/registration.css') }}">
+@section('title')
+Registration
+@endsection
+@section('maincontent')
     <div class="wrapper">
     <div class="container">
         <h1>Register</h1>
-        <form action="{{ route('register') }}" method="post">
+        <form action="{{ route('register',$user) }}" method="post">
             @csrf
             <input type="text" placeholder="Name" name="name" value="{{ old('name') }}">
             @if($errors->has('name'))
@@ -85,7 +24,7 @@
             <br>
             <input type="date" placeholder="Birthdate" name="birthday" value="{{ old('birthday') }}">
             <br>
-            <input type="email" placeholder="Email Address"  name="email" value="{{ $email }}">
+            <input type="email" placeholder="Email Address"  name="email" value="{{ $user->email }}">
             @if($errors->has('email'))
             <div class="error">{{ $errors->first('email') }}</div>
             @endif
@@ -99,5 +38,4 @@
         </form>
     </div>
 </div>
-</body>
-</html>
+@endsection

@@ -1,10 +1,11 @@
 @extends('layout.app')
 <link rel="stylesheet" href="{{ asset('css/notVerified.css') }}">
 @section('title')
-Not Verified
+Unathorized
 @endsection
 @section('maincontent')
     <div class="wrapper">
-        <img src="https://http.cat/403.jpg" alt="">
+        <img src="https://http.cat/401.jpg" alt="">
     </div>
-@endsection
+</body>
+</html>

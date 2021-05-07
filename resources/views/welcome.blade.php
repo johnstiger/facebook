@@ -1,52 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dashboard</title>
-    <style>
-        .wrapper{
-            justify-content: center;
-            align-content: center;
-            display: grid;
-            width: 100vw;
-            position: fixed;
-            height: 100vh;
-        }
-        .container{
-            width: auto;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            border: none;
-            box-shadow: 2px 2px 5px dimgrey;
-        }
-       table{
-           padding:25px;
-           border:1px solid;
-           border-radius: 10px;
-       }
-       .nav{
-            padding: 20px;
-            box-shadow: 1px 1px 5px dimgrey;
-       }
-       a{
-            text-decoration: none;
-            color: cadetblue;
-            font-family: cursive;
-       }
-
-       a:hover{
-           color: blue;
-       }
-    </style>
-</head>
-<body>
+@extends('layout.app')
+<link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
+@section('title')
+Welcome
+@endsection
+@section('maincontent')
     <div class="nav">
         <div class="header">
-            <a href="{{ route('base') }}">Logout</a>
+            <a href="{{ route('logout') }}">Logout</a>
         </div>
+    </div>
+    <div class="welcome">
+        <div class="message">Welcome {{ $user->name }}!</div>
     </div>
     <div class="wrapper">
     <div class="container">
@@ -70,8 +34,6 @@
                </tr>
            </tbody>
        </table>
-
     </div>
     </div>
-</body>
-</html>
+@endsection

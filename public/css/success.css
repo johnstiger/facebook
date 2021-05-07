@@ -1,0 +1,31 @@
+.wrapper{
+    justify-content: center;
+    align-content: center;
+    display: grid;
+    width: 100vw;
+    position: fixed;
+    height: 100vh;
+}
+.container{
+    width: auto;
+    padding: 40px;
+    text-align: center;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px dimgrey;
+}
+
+.login{
+    padding: 10px;
+    width: 100%;
+    margin-top: 30px;
+    background-color: darkgreen;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+}
+a{
+    text-decoration: none;
+    color: white;
+}

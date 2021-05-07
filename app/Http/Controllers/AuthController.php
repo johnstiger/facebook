@@ -2,85 +2,112 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Notifications\EmailVerification;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    /**
+     * Sending Email to verify the request
+     * return sending verification link to email
+     * account
+    */
+    public function register(UserRequest $request)
     {
-        $validation = Validator::make($request->all(),[
-            'email' => 'required|email|unique:users'
-        ]);
         try {
-            if($validation->fails()){
-                return back()->withErrors($validation);
+            $data = User::create($request->all());
+            $token = $data->createToken('access_token');
+            $data->notify(new EmailVerification($data, $token->plainTextToken));
+            return redirect()->route('successSent');
+        } catch (\Exception $error) {
+            dd($error->getMessage());
+        }
+    }
+
+    /**
+     *
+     * Check if the user has a access Token
+     * To access the Route
+     *
+    */
+    public function checkToken(User $user, $token)
+    {
+        if($user->tokens->isEmpty()){
+            return view('notVerified');
+        }
+        return view('registration',compact('user'));
+
+    }
+
+    /**
+     *
+     * Register after clicking button from email
+     * return saving data in database
+    */
+    public function registrationForm(UserRequest $request, User $user)
+    {
+        try {
+            $details = $request->all();
+            $details["password"] = Hash::make($request->password);
+            $details["email_verified_at"] = now();
+            $user->update($details);
+            return redirect()->route('success');
+        } catch (\Exception $error) {
+            dd($error->getMessage());
+        }
+    }
+
+    /**
+     *
+     * Login logic | Adding Access Token to
+     * to Authorized
+     * return dashboard
+    */
+    public function login(UserRequest $request)
+    {
+        try {
+            $user = User::where('email',$request->email)->first();
+            if(!$user || !Hash::check($request->password, $user->password)){
+                return back()->with('error','Email or Password is incorrect!');
             }else{
-                $data = new User();
-                $data->email = $request->email;
-                $data->notify(new EmailVerification($data));
-                $message = "Link Verification Successfully Sent!";
-                return back()->with(['success'=>$message,'user'=>$data]);
+                $user->createToken('access_token');
+                Auth::login($user);
+                return redirect()->route('dashboard',$user);
             }
         } catch (\Exception $error) {
             dd($error->getMessage());
         }
     }
 
-
-    public function registrationForm(Request $request)
+    /**
+     *
+     * Logout logic | removing Access Token
+     * to be not Authorized
+     * return login page
+    */
+    public function logout()
     {
-        $validation = Validator::make($request->all(),[
-            'email' => 'required|email|unique:users',
-            'password' => 'required',
-            'name' => 'required',
-        ]);
-        try {
-            if($validation->fails()){
-                return back()->withErrors($validation);;
-            }else{
-                $details = $request->all();
-                $details["password"] = Hash::make($request->password);
-                $details["email_verified_at"] = now();
-                User::create($details);
-                return redirect()->route('success');
-            }
-        } catch (\Exception $error) {
-            dd($error->getMessage());
+        if(Auth::user()->tokens->isNotEmpty()){
+            Auth::user()->tokens()->delete();
         }
+        return redirect()->route('base');
     }
 
-    public function login(Request $request)
-    {
-        $validation = Validator::make($request->all(),[
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        try {
-            if($validation->fails()){
-                return back()->withErrors($validation);
-            }else{
-                $user = User::where('email',$request->email)->first();
-
-                if(!$user || !Hash::check($request->password, $user->password)){
-                    return back()->with('error','Email or Password is incorrect!');
-                }else{
-                    if($user->email_verified_at == null){
-                        return back()->with('error','Your Email is Not Verified Yet! Please Register');
-                    }
-                    return redirect()->route('dashboard',$user);
-                }
-            }
-        } catch (\Exception $error) {
-            dd($error->getMessage());
+     /**
+     *
+     * Welcome check if the user has
+     * Access Token to Authorized
+     * return Dashboard
+    */
+    public function welcome(User $user){
+        if($user->tokens->isEmpty()){
+            return view('unAuthorized');
         }
+        return view('welcome',compact('user'));
     }
-
 
 
 }

@@ -1,83 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
-    <style>
-        .wrapper{
-            justify-content: center;
-            align-content: center;
-            display: grid;
-            width: 100vw;
-            position: fixed;
-            height: 100vh;
-        }
-        .container{
-            width: auto;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            border: none;
-            box-shadow: 2px 2px 5px dimgrey;
-        }
-        .container input{
-            margin-bottom: 20px;
-            border: none;
-            border-bottom: 1px solid;
-            border-radius: 0px !important;
-            padding: 10px;
-            width: 200px;
-            outline: none;
-        }
-        .container input[type="text"]{
-            margin-bottom: 20px;
-            border: none;
-            border-bottom: 1px solid;
-            border-radius: 0px !important;
-            padding: 10px;
-
-        }
-        button{
-            padding: 10px;
-            width: 100%;
-            margin-top: 30px;
-            background-color: darkgreen;
-            border: none;
-            border-radius: 10px;
-            color: white;
-            cursor: pointer;
-        }
-        .password{
-            margin-left: 20px;
-        }
-        .facebook{
-            margin-top: 9px;
-            padding: 8px;
-            background-color: rgb(9, 124, 231);
-            border-radius: 10px;
-            font-family: -webkit-pictograph;
-        }
-        a{
-            text-decoration: none;
-            color: white;
-        }
-
-        .error{
-            color: red;
-            font-size: 12px;
-        }
-        .register{
-            color: blue;
-            font-family: cursive;
-            font-size: 14px;
-        }
-    </style>
-</head>
-<body>
+@extends('layout.app')
+<link rel="stylesheet" href="{{ asset('css/login.css') }}">
+@section('title')
+Login
+@endsection
+@section('maincontent')
     <div class="wrapper">
-
     <div class="container">
         @if(session('error'))
             <div class="error">{{ session('error') }}</div>
@@ -103,9 +30,11 @@
                     Login with Facebook
                 </a>
             </div>
+            <p><a href="#" class="register">Forget Password</a></p>
             <p>Don't have an account? <a href="{{ route('registerHere') }}" class="register">Register Here!</a></p>
         </form>
     </div>
     </div>
+@endsection
 </body>
 </html>

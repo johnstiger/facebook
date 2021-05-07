@@ -1,0 +1,8 @@
+.wrapper{
+    justify-content: center;
+    align-content: center;
+    display: grid;
+    width: 100vw;
+    position: fixed;
+    height: 100vh;
+}

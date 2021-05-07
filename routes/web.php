@@ -18,23 +18,20 @@ Route::get('/', function () {
     return view('login');
 })->name('base');
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/dashboard/{user}','AuthController@welcome')->name('dashboard');
+    Route::any('/logout','AuthController@logout')->name('logout');
+});
+
+//Facebook
 Route::get('auth/redirect','FacebookController@redirect');
 Route::get('auth/facebook/callback','FacebookController@callback');
 
 Route::view('/register','register')->name('registerHere');
-
 Route::post('/register','AuthController@register')->name('sendEmail');
 
-Route::get('/registration-form/{email}',function($email){
-    return view('registration',compact('email'));
-});
-
-Route::post('/registration-form','AuthController@registrationForm')->name('register');
 Route::post('/login','AuthController@login')->name('login');
-
 Route::view('/success','success')->name('success');
-Route::get('/NotVerified','AuthController@notVerified')->name('verification.notice');
-
-Route::get('/dashboard/{user}',function(User $user){
-    return view('welcome',compact('user'));
-})->name('dashboard');
+Route::get('/registration-form/{user}/{token}','AuthController@checkToken');
+Route::post('/registration-form/{user}','AuthController@registrationForm')->name('register');
+Route::view('/success/sentEmail','successSentEmail')->name('successSent');

@@ -11,14 +11,16 @@ class EmailVerification extends Notification
 {
     use Queueable;
     private $user;
+    private $token;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $token)
     {
         $this->user = $user;
+        $this->token = $token;
     }
 
     /**
@@ -42,7 +44,7 @@ class EmailVerification extends Notification
     {
         return (new MailMessage)
                     ->line('The introduction to the notification.')
-                    ->action('Validate Email', url('/registration-form/'.$this->user->email))
+                    ->action('Validate Email', url('/registration-form/'.$this->user->id.'/'.$this->token))
                     ->line('Thank you for using our application!');
     }
 
