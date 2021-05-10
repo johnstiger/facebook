@@ -30,7 +30,7 @@ Login
                     Login with Facebook
                 </a>
             </div>
-            <p><a href="#" class="register">Forget Password</a></p>
+            <p><a href="{{ route('forgotPassword') }}" class="register">Forget Password</a></p>
             <p>Don't have an account? <a href="{{ route('registerHere') }}" class="register">Register Here!</a></p>
         </form>
     </div>

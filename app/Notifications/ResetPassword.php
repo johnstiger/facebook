@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class EmailVerification extends Notification
+class ResetPassword extends Notification
 {
     use Queueable;
     private $user;
@@ -42,11 +42,11 @@ class EmailVerification extends Notification
      */
     public function toMail($notifiable)
     {
-        $url = "https://johnstiger.herokuapp.com/".$this->user->id."/".$this->token;
-
+        $url = "http://localhost:8000/resetingPassword/".$this->user->id."/".$this->token;
+        // $url = "https://johnstiger.herokuapp.com/resetingPassword/".$this->token;
         return (new MailMessage)
                     ->line('The introduction to the notification.')
-                    ->action('Validate Email', $url)
+                    ->action('Reset Password', $url)
                     ->line('Thank you for using our application!');
     }
 

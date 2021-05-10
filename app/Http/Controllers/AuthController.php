@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Notifications\EmailVerification;
+use App\Notifications\ResetPassword;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -109,5 +111,57 @@ class AuthController extends Controller
         return view('welcome',compact('user'));
     }
 
+      /**
+     *
+     * Forgot Password
+     * Via Email
+     * return view
+    */
+    public function forgotPassword(){
+        return view('forgotPassword');
+    }
 
+    /**
+     *
+     * Forgot Password
+     * Via Email
+     * return view
+    */
+    public function resetPassword(UserRequest $request){
+        try {
+            $user = User::where('email',$request->email)->first();
+            if(!$user){
+                return back()->with('error','Your email is not found!');
+            }else{
+                $token = $user->createToken('access_token');
+                $user->notify(new ResetPassword($user,$token->plainTextToken));
+                return redirect()->route('successSent');
+            }
+        } catch (\Exception $error) {
+            dd($error->getMessage());
+        }
+    }
+
+    public function resetingPassword(User $user, $token)
+    {
+        $test = Carbon::parse($user->tokens()->latest()->first()->created_at);
+        $time = $test->diff(now())->format('%i');
+        if($time > "2"){
+            return view('PageExpired');
+        }
+        if($user->tokens->isEmpty()){
+            return view('unAuthorized');
+        }
+        return view('resetPassword',compact('user'));
+    }
+
+    public function resetSuccess(UserRequest $request, User $user)
+    {
+        try {
+            $user->update(['password' => Hash::make($request->password)]);
+            return redirect()->route('success');
+        } catch (\Exception $error) {
+            dd($error->getMessage());
+        }
+    }
 }

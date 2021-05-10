@@ -35,3 +35,10 @@ Route::view('/success','success')->name('success');
 Route::get('/registration-form/{user}/{token}','AuthController@checkToken');
 Route::post('/registration-form/{user}','AuthController@registrationForm')->name('register');
 Route::view('/success/sentEmail','successSentEmail')->name('successSent');
+
+
+Route::get('/forgotPassword','AuthController@forgotPassword')->name('forgotPassword');
+Route::post('/send/email/resetPassword','AuthController@resetPassword')->name('sendToEmail');
+
+Route::get('/resetingPassword/{user}/{hash}','AuthController@resetingPassword')->name('resetPassword');
+Route::post('/reset/{user}','AuthController@resetSuccess')->name('reset');

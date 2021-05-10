@@ -33,6 +33,15 @@ class UserRequest extends FormRequest
                 'email' => 'required|email',
                 'password' => 'required',
             ];
+        }else if($req->action['as']== "sendToEmail"){
+            $validate = [
+                'email' => 'required|email'
+            ];
+        }else if ($req->action['as'] == "reset"){
+            $validate = [
+                'password' => 'required|confirmed',
+                'password_confirmation' => 'required'
+            ];
         }else{
             $validate = [
                 'email' => 'required|email',

@@ -17,7 +17,7 @@ Success
 @section('maincontent')
     <div class="wrapper">
     <div class="container">
-        <h3>Successfully Sent the Email Verification Link</h3>
+        <h3>Link is Successfully sent to your Email!</h3>
         <p>Please check your email to verify your email account</p>
         <a href="{{ route('base') }}"><p>Thank You!</p></a>
     </div>
