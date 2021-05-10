@@ -42,8 +42,8 @@ class ResetPassword extends Notification
      */
     public function toMail($notifiable)
     {
-        $url = "http://localhost:8000/resetingPassword/".$this->user->id."/".$this->token;
-        // $url = "https://johnstiger.herokuapp.com/resetingPassword/".$this->token;
+        // $url = "http://localhost:8000/resetingPassword/".$this->user->id."/".$this->token;
+        $url = "https://johnstiger.herokuapp.com/resetingPassword/".$this->token;
         return (new MailMessage)
                     ->line('The introduction to the notification.')
                     ->action('Reset Password', $url)
