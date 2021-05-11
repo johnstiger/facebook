@@ -14,13 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/login', function () {
     return view('login');
 })->name('base');
+Route::post('/login','AuthController@login')->name('login');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dashboard/{user}','AuthController@welcome')->name('dashboard');
     Route::any('/logout','AuthController@logout')->name('logout');
+    Route::get('/email','AddMultiple@sendEmail')->name('email');
+    Route::post('/email','AddMultiple@sendMultipleEmail')->name('send');
 });
 
 //Facebook
@@ -29,16 +32,11 @@ Route::get('auth/facebook/callback','FacebookController@callback');
 
 Route::view('/register','register')->name('registerHere');
 Route::post('/register','AuthController@register')->name('sendEmail');
-
-Route::post('/login','AuthController@login')->name('login');
-Route::view('/success','success')->name('success');
 Route::get('/registration-form/{user}/{token}','AuthController@checkToken');
 Route::post('/registration-form/{user}','AuthController@registrationForm')->name('register');
-Route::view('/success/sentEmail','successSentEmail')->name('successSent');
-
-
 Route::get('/forgotPassword','AuthController@forgotPassword')->name('forgotPassword');
 Route::post('/send/email/resetPassword','AuthController@resetPassword')->name('sendToEmail');
-
 Route::get('/resetingPassword/{user}/{hash}','AuthController@resetingPassword')->name('resetPassword');
 Route::post('/reset/{user}','AuthController@resetSuccess')->name('reset');
+
+

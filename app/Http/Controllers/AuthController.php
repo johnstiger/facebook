@@ -23,7 +23,7 @@ class AuthController extends Controller
             $data = User::create($request->all());
             $token = $data->createToken('access_token');
             $data->notify(new EmailVerification($data, $token->plainTextToken));
-            return redirect()->route('successSent');
+            return view('successSentEmail');
         } catch (\Exception $error) {
             dd($error->getMessage());
         }
@@ -56,7 +56,7 @@ class AuthController extends Controller
             $details["password"] = Hash::make($request->password);
             $details["email_verified_at"] = now();
             $user->update($details);
-            return redirect()->route('success');
+            return view('success');
         } catch (\Exception $error) {
             dd($error->getMessage());
         }
@@ -135,13 +135,20 @@ class AuthController extends Controller
             }else{
                 $token = $user->createToken('access_token');
                 $user->notify(new ResetPassword($user,$token->plainTextToken));
-                return redirect()->route('successSent');
+                return view('successSentEmail');
             }
         } catch (\Exception $error) {
             dd($error->getMessage());
         }
     }
 
+    /**
+     *
+     * Reset Password
+     * Via Email
+     * if the token created more than 2 minutes
+     * return Expired
+    */
     public function resetingPassword(User $user, $token)
     {
         $test = Carbon::parse($user->tokens()->latest()->first()->created_at);
@@ -159,7 +166,7 @@ class AuthController extends Controller
     {
         try {
             $user->update(['password' => Hash::make($request->password)]);
-            return redirect()->route('success');
+            return view('success');
         } catch (\Exception $error) {
             dd($error->getMessage());
         }
