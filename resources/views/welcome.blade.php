@@ -13,6 +13,8 @@ Welcome
         <div class="message">Welcome {{ $user->name }}!</div>
     </div>
     <div class="wrapper">
+        <a href="{{ route('email') }}">Send Email</a>
+
     <div class="container">
        <table>
            <thead>
